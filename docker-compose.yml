@@ -1,0 +1,21 @@
+services:
+  smartload-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: smartload-optimization-api:latest
+    container_name: smartload-api
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+          cpus: "1.0"
